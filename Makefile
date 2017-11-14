@@ -1,13 +1,13 @@
 dev:
 	gofmt -w .
-	dbhost=localhost dbport=27017 dbname=pokemon go run main.go
+	API_VERION=1 DB_HOST=localhost DB_PORT=27017 DB_NAME=pokemon go run main.go
 
 build:
 	go build github.com/kurozakizz/go-api-starter
 
 run:
 	go build github.com/kurozakizz/go-api-starter
-	dbhost=localhost dbport=27017 dbname=pokemon ./
+	API_VERION=1 DB_HOST=localhost DB_PORT=27017 DB_NAME=pokemon ./
 
 # dbuild:
 # 	docker build -t api-start .
