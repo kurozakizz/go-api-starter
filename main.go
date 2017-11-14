@@ -5,8 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-
-	"github.com/gorilla/mux"
 )
 
 var (
@@ -19,9 +17,19 @@ func getAPIPrefix() string {
 
 func main() {
 	apiPrefix := getAPIPrefix()
-	router := mux.NewRouter()
-	router.HandleFunc(apiPrefix+"/pokemons", getPokemonListHandler).Methods("GET")
-	log.Fatal(http.ListenAndServe(":5000", router))
+	http.HandleFunc(apiPrefix+"/pokemons", requestLogger(getPokemonListHandler))
+	http.ListenAndServe(":5000", nil)
+}
+
+func requestLogger(h http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		log.Println("request",
+			r.Method,
+			r.URL.Path,
+			r.RemoteAddr,
+		)
+		h(w, r)
+	}
 }
 
 func getPokemonListHandler(w http.ResponseWriter, r *http.Request) {
