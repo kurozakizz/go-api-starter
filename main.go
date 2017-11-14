@@ -7,11 +7,11 @@ import (
 )
 
 func main() {
-	http.HandleFunc("/fruits", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/pokemons", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json; charset=utf-8")
 		w.WriteHeader(http.StatusOK)
 
-		fruits := []string{"apple", "peach", "pear"}
+		fruits := []string{"Pikachu", "Psyduck", "Happy"}
 		json, _ := json.Marshal(fruits)
 
 		w.Write(json)
