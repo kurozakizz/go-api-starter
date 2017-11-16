@@ -9,23 +9,9 @@ import (
 	"github.com/kurozakizz/go-api-starter/middleware"
 )
 
-type middlewareHandler func(next http.HandlerFunc) http.HandlerFunc
-
-func chainMiddleware(mw ...middlewareHandler) middlewareHandler {
-	return func(final http.HandlerFunc) http.HandlerFunc {
-		return func(w http.ResponseWriter, r *http.Request) {
-			last := final
-			for i := len(mw) - 1; i >= 0; i-- {
-				last = mw[i](last)
-			}
-			last(w, r)
-		}
-	}
-}
-
 func main() {
 	apiPrefix := config.GetAPIPrefix()
-	mws := chainMiddleware(middleware.WriteRequestLog)
+	mws := middleware.ChainMiddleware(middleware.WriteRequestLog)
 
 	fmt.Println("Running API " + apiPrefix + " ...")
 	http.HandleFunc(apiPrefix+"/pokemons", mws(getPokemonListHandler))
