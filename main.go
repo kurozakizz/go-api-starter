@@ -15,7 +15,7 @@ var (
 
 func main() {
 	fmt.Println("Running API " + apiPrefix + " ...")
-	http.HandleFunc(apiPrefix+"/pokemons", middleware.RequestLog(getPokemonListHandler))
+	http.HandleFunc(apiPrefix+"/pokemons", middleware.WriteRequestLog(getPokemonListHandler))
 	http.ListenAndServe(":5000", nil)
 }
 

@@ -5,9 +5,10 @@ import (
 	"net/http"
 )
 
-func RequestLog(next http.HandlerFunc) http.HandlerFunc {
+// WriteRequestLog will echo request log to console
+func WriteRequestLog(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("request-log",
+		log.Println("request",
 			r.Method,
 			r.URL.Path,
 			r.RemoteAddr,
