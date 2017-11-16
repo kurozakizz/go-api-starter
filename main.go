@@ -2,29 +2,21 @@ package main
 
 import (
 	"encoding/json"
-	"log"
+	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/kurozakizz/go-api-starter/middleware"
 )
 
 var (
-	apiVersion = os.Getenv("API_VERION")
+	apiPrefix = "/v" + os.Getenv("API_VERION")
 )
 
 func main() {
-	http.HandleFunc("/pokemons", withLogging(getPokemonListHandler))
+	fmt.Println("Running API " + apiPrefix + " ...")
+	http.HandleFunc(apiPrefix+"/pokemons", middleware.RequestLog(getPokemonListHandler))
 	http.ListenAndServe(":5000", nil)
-}
-
-func withLogging(next http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		log.Println("request",
-			r.Method,
-			r.URL.Path,
-			r.RemoteAddr,
-		)
-		next.ServeHTTP(w, r)
-	}
 }
 
 func getPokemonListHandler(w http.ResponseWriter, r *http.Request) {
