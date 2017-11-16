@@ -12,7 +12,7 @@ import (
 func main() {
 	apiPrefix := config.GetAPIPrefix()
 	fmt.Println("Running API " + apiPrefix + " ...")
-	http.HandleFunc(apiPrefix+"/pokemons", middleware.WriteTracer(middleware.WriteRequestLog(getPokemonListHandler)))
+	http.HandleFunc(apiPrefix+"/pokemons", middleware.TraceError(middleware.WriteRequestLog(getPokemonListHandler)))
 	http.ListenAndServe(":5000", nil)
 }
 
