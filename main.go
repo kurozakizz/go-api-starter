@@ -11,24 +11,19 @@ var (
 	apiVersion = os.Getenv("API_VERION")
 )
 
-func getAPIPrefix() string {
-	return "/v" + apiVersion
-}
-
 func main() {
-	apiPrefix := getAPIPrefix()
-	http.HandleFunc(apiPrefix+"/pokemons", requestLogger(getPokemonListHandler))
+	http.HandleFunc("/pokemons", withLogging(getPokemonListHandler))
 	http.ListenAndServe(":5000", nil)
 }
 
-func requestLogger(h http.HandlerFunc) http.HandlerFunc {
+func withLogging(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Println("request",
 			r.Method,
 			r.URL.Path,
 			r.RemoteAddr,
 		)
-		h(w, r)
+		next.ServeHTTP(w, r)
 	}
 }
 
