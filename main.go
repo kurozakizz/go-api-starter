@@ -4,18 +4,15 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
 
+	"github.com/kurozakizz/go-api-starter/config"
 	"github.com/kurozakizz/go-api-starter/middleware"
 )
 
-var (
-	apiPrefix = "/v" + os.Getenv("API_VERION")
-)
-
 func main() {
+	apiPrefix := config.GetAPIPrefix()
 	fmt.Println("Running API " + apiPrefix + " ...")
-	http.HandleFunc(apiPrefix+"/pokemons", middleware.WriteRequestLog(getPokemonListHandler))
+	http.HandleFunc(apiPrefix+"/pokemons", middleware.WriteTracer(middleware.WriteRequestLog(getPokemonListHandler)))
 	http.ListenAndServe(":5000", nil)
 }
 
